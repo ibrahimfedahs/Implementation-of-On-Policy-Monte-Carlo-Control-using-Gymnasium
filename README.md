@@ -109,7 +109,126 @@ $$
 
 
 ```python
-# Write your code here
+import gymnasium as gym
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Create FrozenLake environment
+env = gym.make("FrozenLake-v1", is_slippery=False)
+
+# Parameters
+num_episodes = 10000
+gamma = 0.99
+alpha = 0.1
+epsilon = 1.0
+epsilon_min = 0.01
+epsilon_decay = 0.9995
+
+# Initialize Q-table
+Q = np.zeros((env.observation_space.n, env.action_space.n))
+
+episode_rewards = []
+
+
+# Epsilon-greedy action selection
+def choose_action(state, epsilon):
+    if np.random.random() < epsilon:
+        return env.action_space.sample()
+    else:
+        return np.argmax(Q[state])
+
+
+# Monte Carlo Control
+for episode in range(num_episodes):
+
+    state, info = env.reset()
+
+    episode_data = []
+    done = False
+
+    # Generate complete episode
+    while not done:
+
+        action = choose_action(state, epsilon)
+
+        next_state, reward, terminated, truncated, info = env.step(action)
+
+        episode_data.append((state, action, reward))
+
+        state = next_state
+        done = terminated or truncated
+
+    # Calculate returns and update Q-values
+    G = 0
+
+    for state, action, reward in reversed(episode_data):
+
+        G = reward + gamma * G
+
+        # Incremental Monte Carlo update
+        Q[state, action] = Q[state, action] + alpha * (
+            G - Q[state, action]
+        )
+
+    # Store episode reward
+    episode_rewards.append(sum(x[2] for x in episode_data))
+
+    # Decay epsilon
+    epsilon = max(epsilon_min, epsilon * epsilon_decay)
+
+
+# Display Q-table
+print("\nFinal Q-table:")
+print(np.round(Q, 3))
+
+
+# Estimated State-Value Function
+V = np.max(Q, axis=1)
+
+print("\nEstimated State-Value Function:")
+print(np.round(V, 3))
+
+
+# Learned Policy
+policy = np.argmax(Q, axis=1)
+
+print("\nLearned Policy:")
+
+action_symbols = {
+    0: "←",
+    1: "↓",
+    2: "→",
+    3: "↑"
+}
+
+for state in range(env.observation_space.n):
+    print(f"State {state}: {action_symbols[policy[state]]}")
+
+
+# Average reward over last 1000 episodes
+average_reward = np.mean(episode_rewards[-1000:])
+
+print("\nAverage reward over last 1000 episodes:",
+      round(average_reward, 3))
+
+
+# Learning curve
+window = 100
+
+moving_average = np.convolve(
+    episode_rewards,
+    np.ones(window) / window,
+    mode="valid"
+)
+
+plt.plot(moving_average)
+plt.xlabel("Episode")
+plt.ylabel("Average Reward")
+plt.title("Monte Carlo Control Learning Curve")
+plt.grid()
+plt.show()
+
+env.close()
 
 
 
