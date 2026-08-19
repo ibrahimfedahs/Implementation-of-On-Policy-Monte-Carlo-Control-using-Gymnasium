@@ -240,10 +240,18 @@ env.close()
 
 ```text
 Final Q-table:
+              <img width="707" height="344" alt="10000" src="https://github.com/user-attachments/assets/c2dfd9b8-b311-4c1e-aa77-accb250678a0" />
+
+              <img width="509" height="340" alt="5000" src="https://github.com/user-attachments/assets/d775d321-f65b-4e40-8286-7e751d8697ab" />
 
 
 
 Estimated State-Value Function:
+                               <img width="752" height="98" alt="esti 10000" src="https://github.com/user-attachments/assets/c3fc6160-5c75-4219-b227-3351a31fed3c" />
+
+
+                               <img width="675" height="88" alt="esti 5000" src="https://github.com/user-attachments/assets/8fdd0c5b-2dd4-4f1c-9596-450bea005e3c" />
+
 
 
 
@@ -252,7 +260,10 @@ Estimated State-Value Function:
 
 
 Learned Policy:
+                 <img width="808" height="504" alt="estima10000" src="https://github.com/user-attachments/assets/fd1ebafb-c48e-4587-9cde-0478de0f2ff4" />
 
+
+                 <img width="680" height="487" alt="estimat 5000" src="https://github.com/user-attachments/assets/70411440-a138-4bc0-acfa-5da22848e2aa" />
 
 
 
@@ -265,6 +276,7 @@ Average reward over last 1000 episodes:
 
 ## Result
 ```text
+The Monte Carlo Control algorithm was successfully implemented using the Gymnasium FrozenLake-v1 environment. The agent generated complete episodes, calculated Monte Carlo returns, updated the Q-table, and gradually improved its policy using epsilon-greedy action selection. The final Q-table, state-value function, learned policy, average reward, and learning curve were obtained successfully.
 
 
 
@@ -273,7 +285,7 @@ Average reward over last 1000 episodes:
 
 ## Inference
 ```text
-
+The experiment shows that Monte Carlo Control can learn a suitable policy from complete episodes without requiring prior knowledge of the environment's transition model. With more training episodes, the agent improves its ability to reach the goal while avoiding holes.
 
 
 ```
